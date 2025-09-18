@@ -19,7 +19,8 @@ export async function POST(req: NextRequest) {
 		}
         const hash = await uploadImage(file);
         return NextResponse.json({ media: { imageHash: hash } });
-	} catch (e: any) {
-		return NextResponse.json({ error: e.message || "Upload failed" }, { status: 500 });
+	} catch (e: unknown) {
+		const message = e instanceof Error ? e.message : "Upload failed";
+		return NextResponse.json({ error: message }, { status: 500 });
 	}
 }

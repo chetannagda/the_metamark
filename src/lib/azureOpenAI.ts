@@ -47,7 +47,7 @@ export async function generateAdPlanFromPrompt(prompt: string): Promise<AdPlan> 
 	let parsed: AdPlan;
 	try {
 		parsed = JSON.parse(content);
-	} catch (e) {
+	} catch {
 		throw new Error("Invalid JSON from Azure OpenAI");
 	}
 	if (!parsed.countries || parsed.countries.length === 0) parsed.countries = [config.defaults.country];

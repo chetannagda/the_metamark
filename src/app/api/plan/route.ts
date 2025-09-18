@@ -11,7 +11,8 @@ export async function POST(req: NextRequest) {
 	try {
 		const plan = await generateAdPlanFromPrompt(prompt);
 		return NextResponse.json({ plan });
-	} catch (e: any) {
-		return NextResponse.json({ error: e.message || "AI plan failed" }, { status: 500 });
+	} catch (e: unknown) {
+		const message = e instanceof Error ? e.message : "AI plan failed";
+		return NextResponse.json({ error: message }, { status: 500 });
 	}
 }

@@ -19,7 +19,8 @@ export async function POST(req: NextRequest) {
 			activate: body.activate,
 		});
 		return NextResponse.json({ ids });
-	} catch (e: any) {
-		return NextResponse.json({ error: e.message || "Launch failed" }, { status: 500 });
+	} catch (e: unknown) {
+		const message = e instanceof Error ? e.message : "Launch failed";
+		return NextResponse.json({ error: message }, { status: 500 });
 	}
 }

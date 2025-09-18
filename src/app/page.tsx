@@ -135,7 +135,7 @@ export default function Home() {
                   <input value={plan.campaignName} onChange={(e) => setPlan({ ...plan, campaignName: e.target.value })} className="mt-1 w-full rounded-md border bg-white p-2 text-sm" />
                 </label>
                 <label className="text-sm">Campaign Objective
-                  <select value={plan.objective} onChange={(e) => setPlan({ ...plan, objective: e.target.value as any })} className="mt-1 w-full rounded-md border bg-white p-2 text-sm">
+                  <select value={plan.objective} onChange={(e) => setPlan({ ...plan, objective: e.target.value as Plan["objective"] })} className="mt-1 w-full rounded-md border bg-white p-2 text-sm">
                     {objectiveOptions.map((o) => (
                       <option key={o.value} value={o.value}>{o.label}</option>
                     ))}

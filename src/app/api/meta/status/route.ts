@@ -10,7 +10,8 @@ export async function GET(req: NextRequest) {
 		const res = await fetch(`https://graph.facebook.com/${process.env.META_GRAPH_API_VERSION || "v18.0"}/${id}?fields=id,name,status&access_token=${encodeURIComponent(process.env.META_ACCESS_TOKEN || "")}`);
 		const data = await res.json();
 		return NextResponse.json({ data });
-	} catch (e: any) {
-		return NextResponse.json({ error: e.message || "Status fetch failed" }, { status: 500 });
+	} catch (e: unknown) {
+		const message = e instanceof Error ? e.message : "Status fetch failed";
+		return NextResponse.json({ error: message }, { status: 500 });
 	}
 }

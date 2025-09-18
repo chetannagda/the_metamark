@@ -9,7 +9,9 @@ export type CreatedIds = {
 	adId: string;
 };
 
-async function graph(path: string, init?: RequestInit): Promise<any> {
+type GraphJson = unknown;
+
+async function graph(path: string, init?: RequestInit): Promise<GraphJson> {
 	const url = `${GRAPH}${path}${path.includes("?") ? "&" : "?"}access_token=${encodeURIComponent(config.meta.accessToken)}`;
 	const res = await fetch(url, init);
 	if (!res.ok) {
@@ -61,6 +63,13 @@ function mapToOutcomeObjective(inputObjective: string): string {
   }
 }
 
+type TargetingSpec = {
+  geo_locations: { countries: string[] };
+  age_min: number;
+  age_max: number;
+  targeting_automation: { advantage_audience: 0 | 1 };
+};
+
 export async function createAdSet(params: {
 	campaignId: string;
 	name: string;
@@ -72,7 +81,7 @@ export async function createAdSet(params: {
 	billingEvent: string;
 	status?: "PAUSED" | "ACTIVE";
 }): Promise<string> {
-	const targeting: any = {
+	const targeting: TargetingSpec = {
 		geo_locations: { countries: params.countries },
 		age_min: params.minAge,
 		age_max: params.maxAge,
@@ -94,6 +103,12 @@ export async function createAdSet(params: {
 	return data.id;
 }
 
+type ObjectStorySpec = {
+  page_id: string;
+  link_data: { message: string; link: string; image_hash?: string };
+  video_data?: { message: string; video_id: string };
+};
+
 export async function createCreativeWithLink(params: {
 	pageId: string;
 	message: string;
@@ -101,7 +116,7 @@ export async function createCreativeWithLink(params: {
 	imageHash?: string;
 	videoId?: string;
 }): Promise<string> {
-	const objectStorySpec: any = {
+	const objectStorySpec: ObjectStorySpec = {
 		page_id: params.pageId,
 		link_data: {
 			message: params.message,
